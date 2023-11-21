@@ -39,7 +39,6 @@ T_write_end = time.time()
 test.fail_disk(dir, 4)
 test.fail_disk(dir, 5)
 
-import pdb; pdb.set_trace()
 #!------------------------ Detect()
 # detect which disks are corrupted
 

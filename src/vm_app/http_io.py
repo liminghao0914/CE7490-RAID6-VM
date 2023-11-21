@@ -25,7 +25,6 @@ def write():
 @app.route('/read', methods=['GET', 'POST'])
 def read():
     filename = "disk"
-    mode = request.data.decode('utf-8')
     try:
         with open(filename, 'rb') as f:
             data = list(f.read())
@@ -46,6 +45,16 @@ def fail():
     except Exception as e:
         app.logger.error(e)
         return f'Bad request: {e}', 400
+
+@app.route('/detect', methods=['GET', 'POST'])
+def detect():
+    try:
+        is_exist = os.path.exists("disk")
+        return str(is_exist), 200
+    except Exception as e:
+        app.logger.error(e)
+        return f'Bad request: {e}', 400
+
 
 def main():
     app.run(host='0.0.0.0', port=5000, debug=True)

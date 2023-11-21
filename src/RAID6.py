@@ -1,7 +1,6 @@
 import os
 import numpy as np
 import math
-import requests
 from os.path import join, getsize
 from collections import defaultdict
 import time
@@ -16,14 +15,16 @@ class RAID6(object):
         config: Config class object as configuration parameter
         debug (boolean): if the intermediate result is printed
     '''
-    def __init__(self, config, debug=True):
+    def __init__(self, config, use_vm=False, debug=True):
         self.debug = debug
+        self.use_vm = use_vm
         self.config = config
         self.gf = GaloisField(num_data_disk = self.config.num_data_disk, num_check_disk= self.config.num_check_disk)
         self.data_disk_list  = list(range(self.config.num_data_disk))
         self.check_disk_list = list(range(self.config.num_data_disk,self.config.num_data_disk+self.config.num_check_disk))
         self.content_length = 0
         self.vm_disk_list = list(range(self.config.num_disk))
+        self.rebuild_vm_disk_list = list(range(self.config.num_disk))
         print("RAID6 setup ready, ready to store data\n")  
 
     def read_data(self, filename, mode = 'rb'):
@@ -34,11 +35,26 @@ class RAID6(object):
         Return:
             data (list)
         '''
-        if "disk" in filename:
-            idx = int(filename.split('_')[-1])
-            # ! VM disk
-            data = requests.get(f'http://{self.vm_disk_list[idx].ip}:5000/read')
-            return data.text
+        if self.use_vm:
+            if "disk" in filename:
+                if 'rebuild' in filename:
+                    idx = int(filename.split('_')[-1])
+                    # ! VM disk
+                    data = self.rebuild_vm_disk_list[idx].read()
+                    if data.status_code != 200:
+                        print("Failed to read from disk {}".format(idx))
+                        return []
+                    else:
+                        return data.json()
+                else:
+                    idx = int(filename.split('_')[-1])
+                    # ! VM disk
+                    data = self.vm_disk_list[idx].read()
+                    if data.status_code != 200:
+                        print("Failed to read from disk {}".format(idx))
+                        return []
+                    else:
+                        return data.json()
         
         # Local
         with open(filename, mode) as f:
@@ -105,8 +121,18 @@ class RAID6(object):
             dir: disk save directory
         ''' 
         for i in range(self.config.num_disk):
-            if os.path.exists(os.path.join(dir, 'disk_{}'.format(i))):
-                os.remove(os.path.join(dir, 'disk_{}'.format(i)))
+            # local disk
+            if not self.use_vm:
+                if os.path.exists(os.path.join(dir, 'disk_{}'.format(i))):
+                    os.remove(os.path.join(dir, 'disk_{}'.format(i)))
+            else:
+                # ! VM disk
+                if 'rebuild' in dir:
+                    self.rebuild_vm_disk_list[i] = VMDisk(i, 'rebuild')
+                    self.rebuild_vm_disk_list[i].rm_disk()
+                else:
+                    self.vm_disk_list[i] = VMDisk(i)
+                    self.vm_disk_list[i].rm_disk()
 
         i = 0        
         parity_start_disk=0
@@ -135,15 +161,24 @@ class RAID6(object):
             parity_start_disk+=1
 
         for i in range(self.config.num_disk):
-            # local disk
-            # with open(os.path.join(dir, 'disk_{}'.format(i)), 'wb+') as f:
-            #     f.write(bytearray(list(np.concatenate(data_list[i]))))
-            # ! VM disk
-            self.vm_disk_list[i] = VMDisk(i)
-            time.sleep(2)
-            res = requests.post(f'http://{self.vm_disk_list[i].ip}:5000/write', data=bytearray(list(np.concatenate(data_list[i]))))
-            if res.status_code != 200:
-                raise Exception(f'Failed to write to disk {i}')
+            if not self.use_vm:
+                # local disk
+                with open(os.path.join(dir, 'disk_{}'.format(i)), 'wb+') as f:
+                    f.write(bytearray(list(np.concatenate(data_list[i]))))
+            else:
+                # ! VM disk
+                if 'rebuild' in dir:
+                    self.rebuild_vm_disk_list[i].run()
+                    time.sleep(2)
+                    res = self.rebuild_vm_disk_list[i].write(bytearray(list(np.concatenate(data_list[i]))))
+                    if res.status_code != 200:
+                        raise Exception(f'Failed to write to disk {i}')
+                else:
+                    self.vm_disk_list[i].run()
+                    time.sleep(2)
+                    res = self.vm_disk_list[i].write(bytearray(list(np.concatenate(data_list[i]))))
+                    if res.status_code != 200:
+                        raise Exception(f'Failed to write to disk {i}')
             
     def write_to_disk(self, filename, dir):
         data = self.distribute_data(filename)
@@ -154,21 +189,26 @@ class RAID6(object):
     def fail_disk(self, dir, disk_number):
         # introduce disk failure by deleting the disk file
         # local disk
-        # os.remove(os.path.join(dir,"disk_{}".format(disk_number)))
-        # ! VM disk
-        res = requests.delete(f'http://{self.vm_disk_list[disk_number].ip}:5000/delete')
-        if res.status_code != 200:
-            print(res.text)
-        print("disk {} failed".format(disk_number))
+        if not self.use_vm:
+            os.remove(os.path.join(dir,"disk_{}".format(disk_number)))
+        else:
+            # ! VM disk
+            # res = requests.delete(f'http://{self.vm_disk_list[disk_number].ip}:5000/fail')
+            res = self.vm_disk_list[disk_number].fail()
+            if res.status_code != 200:
+                print(res.text)
+            print("disk {} failed".format(disk_number))
     
     def corrupt_disk(self, dir, disk_number):
         # introduce disk failure by mistaking parity data
         file_name = os.path.join(dir,"disk_{}".format(disk_number))
         # local disk
-        with open(file_name, 'rb') as f:
-            content = list(f.read())  
-        # ! VM disk
-        content = self.read_data(file_name)
+        if not self.use_vm:
+            with open(file_name, 'rb') as f:
+                content = list(f.read())  
+        else:
+            # ! VM disk
+            content = self.read_data(file_name)
         
         content[0] = content[0]+1
         # local disk
@@ -176,16 +216,26 @@ class RAID6(object):
             f.write(bytearray(content))
         # ! VM disk
         
-            
 
     def detect_failure(self, dir):
         # detect which disk is corrupted 
         fail_ids = []
         for disk_number in range(self.config.num_disk):
-            file_name = os.path.join(dir,"disk_{}".format(disk_number))
-            if not os.path.exists(file_name):
-                print("detected disk {} failture".format(disk_number))
-                fail_ids.append(disk_number)
+            # local disk
+            if not self.use_vm:
+                file_name = os.path.join(dir,"disk_{}".format(disk_number))
+                if not os.path.exists(file_name):
+                    print("detected disk {} failture".format(disk_number))
+                    fail_ids.append(disk_number)
+            else:
+                # ! VM disk
+                # res = requests.get(f'http://{self.vm_disk_list[disk_number].ip}:5000/detect')
+                if 'rebuild' in dir:
+                    res = self.rebuild_vm_disk_list[disk_number].detect()
+                else:
+                    res = self.vm_disk_list[disk_number].detect()
+                if res.text == 'False':
+                    fail_ids.append(disk_number)
         return fail_ids
 
     def rebuild(self, dir, fail_ids):
@@ -202,8 +252,14 @@ class RAID6(object):
 
         chunks_restore = []
         all_disks = defaultdict(lambda: None)
-        for d in os.listdir(dir):
-            all_disks[int(d.split("_")[-1])]=self.read_data(dir+'/'+d)
+        if not self.use_vm:
+            # local disk
+            for d in os.listdir(dir):
+                all_disks[int(d.split("_")[-1])]=self.read_data(dir+'/'+d)
+        else:
+            # ! VM disk
+            for i in range(self.config.num_disk):
+                all_disks[i] = self.read_data(f'disk_{i}')
         assert(len(all_disks[list(all_disks.keys())[0]])%self.config.chunk_size==0)
         n_chunks = int(len(all_disks[0])/self.config.chunk_size)
 
@@ -254,9 +310,13 @@ class RAID6(object):
                 data_restore[l].extend(chunks_restore[c][l])
         
         parity_data_restore = self.compute_parity(np.array(data_restore))
-        dir_rebuild=self.config.mkdisk('./','rebuild')      
-        self.chunk_save(parity_data_restore, dir_rebuild)
-
+        if not self.use_vm:
+            # local disk
+            dir_rebuild=self.config.mkdisk('./','rebuild')
+        else:
+            # ! VM disk
+            dir_rebuild = './storage_rebuild'
+            self.chunk_save(parity_data_restore, dir_rebuild)
         return
 
     def retrieve(self, dir):
@@ -271,8 +331,14 @@ class RAID6(object):
 
         chunks_restore = []
         all_disks = defaultdict(lambda: None)
-        for d in os.listdir(dir):
-            all_disks[int(d.split("_")[-1])]=self.read_data(dir+'/'+d)
+        if not self.use_vm:
+            # local disk
+            for d in os.listdir(dir):
+                all_disks[int(d.split("_")[-1])]=self.read_data(dir+'/'+d)
+        else:
+            # ! VM disk
+            for i in range(self.config.num_disk):
+                all_disks[i] = self.read_data(f'{dir}/disk_{i}')
 
         n_chunks = int(len(all_disks[0])/self.config.chunk_size)
 
