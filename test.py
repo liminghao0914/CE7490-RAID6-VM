@@ -14,7 +14,7 @@ check=True
 T_write_start = time.time()
 cfg = Config()
 dir=cfg.mkdisk('./','default')
-test=RAID6(cfg,False)
+test=RAID6(config=cfg,use_vm=True, debug=True)
 
 ## different test files
 # filename = 'test_small.txt' # 104 bytes

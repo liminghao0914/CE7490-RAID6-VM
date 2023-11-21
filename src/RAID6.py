@@ -15,7 +15,7 @@ class RAID6(object):
         config: Config class object as configuration parameter
         debug (boolean): if the intermediate result is printed
     '''
-    def __init__(self, config, use_vm=False, debug=True):
+    def __init__(self, config, use_vm=True, debug=True):
         self.debug = debug
         self.use_vm = use_vm
         self.config = config
