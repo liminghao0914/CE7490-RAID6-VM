@@ -8,7 +8,7 @@ from kademlia.network import Server
 
 class VMDisk:
     def __init__(self, num_disk, type_disk='default'):
-        # self.vm = docker.from_env()
+        # self.vm = docker.from_env() # docker failed to initialize
         self.num_disk = num_disk
         if type_disk == 'default':
             self.name = f'raidvmdisk_{self.num_disk}'
@@ -34,6 +34,10 @@ class VMDisk:
     def _get_ip(self):
         return subprocess.run(['docker', 'inspect', '-f', '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}', self.name], stdout=subprocess.PIPE).stdout.decode('utf-8').strip()
     
+    def _get_ip_by_p2p(self):
+        # TODO: get ip by p2p
+        pass
+        
     def rm_disk(self):
         # self.vm.containers.get(self.name).remove(force=True)
         subprocess.run(['docker', 'stop', self.name])

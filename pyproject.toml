@@ -1,0 +1,20 @@
+[build-system]
+requires = ["poetry-core>"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "raidvm"
+version = "0.1.0"
+description = "CE7490_Final_Project"
+authors = ["liminghao0914"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+Flask = "3.0.0"
+numpy = "1.22.4"
+kademlia = "2.2.2"
+requests = "2.28.0"
+requests-oauthlib = "1.3.1"
+nest-asyncio = "1.5.6"
+
+[tool.poetry.dev-dependencies]
