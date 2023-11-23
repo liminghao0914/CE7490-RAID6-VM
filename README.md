@@ -4,14 +4,34 @@ This project, part of CE7490 Advanced Topics in Distributed Systems, focuses on 
 
 # Introduction
 
-RAID-6, also referred to as double-parity RAID, enhances data storage reliability by distributing data and parity across multiple disks. This configuration allows for two disk failures within the array without any data loss. It's a step above RAID-5 by adding an additional layer of redundancy.
-
-In our implementation, we've utilized advanced coding techniques based on Vandermonde-RS code. By leveraging Python 3.7 and libraries such as `numpy`, we've been able to implement efficient Galois Field arithmetic and matrix operations which are critical for RAID-6 functionality.
-
+In our implementation, we've utilized advanced coding techniques based on Vandermonde-RS code. 
 The system is designed with six primary functions: distributing data storage, handling data updates, disk failure detection, data restoration, and data object retrieval.
 
-![RAID-6 System Architecture](/images/system_architecture.png) *// Image showing the system architecture.*
+![RAID-6 System Architecture](/images/system_architecture.png)
 
+
+## Overview
+The project report includes various images that demonstrate the system's flow and architecture:
+
+![RAID-6 Data Flow](/images/flow.png)
+
+# Installation
+
+## Dependencies
+
+- Flask==3.0.0
+- numpy==1.22.4
+- kademlia==2.2.2
+- requests==2.28.0
+- requests-oauthlib==1.3.1
+- nest-asyncio==1.5.6
+
+Use the package manager [pip](https://pip.pypa.io/en/stable/) to install RAIDVM.
+
+```bash
+pip install poetry
+poetry install
+```
 
 # Project Structure
 
@@ -44,36 +64,9 @@ The project is structured with clear separation of concerns, allowing for easy c
 To initiate the test experiments and observe the RAID-6 system in action, run:
 
 ```bash
-python test.py 
+bash test.sh
 ```
 
-Upon execution, the system will demonstrate the RAID-6 operations, and the performance metrics will be displayed:
-
-```
-Read time: 0.08199000358581543 seconds
-Write time: 3.647477149963379 seconds
-Rebuild time: 8.104788064956665 seconds
-```
-
-These metrics offer insight into the system's performance, highlighting the efficiency of data reading, writing, and rebuilding processes.
-
-# Visualization
-
-The project report includes various images that demonstrate the system's flow and architecture:
-
-![RAID-6 Data Flow](/images/flow.png) *// Image illustrating the data flow within the RAID-6 system.*
-
-For more detailed visualizations and explanations, refer to the project report `RAID_6_Based_Distributed_Storage_System.pdf`.
-
-# Further Work and Contributions
-
-The project is open for further development and contributions. Future work may include:
-
-- Enhancing the efficiency of Galois Field computations.
-- Expanding the system to support more complex data operations.
-- Improving the user interface for managing and monitoring the RAID-6 system.
-- Integrating additional machine learning algorithms for predictive disk failure analysis.
-
-Contributors can fork the repository, make their changes, and submit a pull request for review.
+# Acknowledgement
 
 
