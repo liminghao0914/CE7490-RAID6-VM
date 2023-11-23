@@ -1,6 +1,6 @@
 # RAID-6 Based Distributed Storage System
 
-This project, part of CE7490 Advanced Topics in Distributed Systems, focuses on the implementation and analysis of a RAID-6 based distributed storage system.
+We implement _RAID6VM: RAID-6-based distributed storage system._ for CE7490 project 2.
 
 <p align="center">
   <img width="460" src="/imgs/RAID_6.png">
@@ -8,8 +8,9 @@ This project, part of CE7490 Advanced Topics in Distributed Systems, focuses on 
 
 # Introduction
 
-In our implementation, we've utilized advanced coding techniques based on Vandermonde-RS code. 
-The system is designed with six primary functions: distributing data storage, handling data updates, disk failure detection, data restoration, and data object retrieval.
+The system is designed with six primary functions: storage, update, failure detection, restoration, and retrieval. 
+Instead of using folders to emulate nodes, extend the implementation to work across multiple virtual machines (VM) to realize a peer-to-peer RAIN. 
+We use the OS-level virtualization techniques to start the VMs.
 
 <p align="center">
   <img width="100%" src="/imgs/r6vm_sys.png">
