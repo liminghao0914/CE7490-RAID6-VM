@@ -7,10 +7,18 @@ This project, part of CE7490 Advanced Topics in Distributed Systems, focuses on 
 In our implementation, we've utilized advanced coding techniques based on Vandermonde-RS code. 
 The system is designed with six primary functions: distributing data storage, handling data updates, disk failure detection, data restoration, and data object retrieval.
 
-![RAID-6 System Architecture](/images/system_architecture.png) 
-*// Image showing the system architecture.*
+![RAID-6 System Architecture](/images/system_architecture.png)
 
 # Installation
+
+## Dependencies
+
+- Flask==3.0.0
+- numpy==1.22.4
+- kademlia==2.2.2
+- requests==2.28.0
+- requests-oauthlib==1.3.1
+- nest-asyncio==1.5.6
 
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install ChatTwin.
 
