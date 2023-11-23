@@ -1,8 +1,9 @@
 # files
 __pycache__/
 *.DS_Store
+data_retrieved
 
 # dir
 storage_default/
 storage_rebuild/
-data_retrieved
+data/
