@@ -34,9 +34,11 @@ class VMDisk:
     def _get_ip(self):
         return subprocess.run(['docker', 'inspect', '-f', '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}', self.name], stdout=subprocess.PIPE).stdout.decode('utf-8').strip()
     
-    def _get_ip_by_p2p(self):
-        # TODO: get ip by p2p
-        pass
+    async def _get_ip_by_p2p(self):
+        self.ip = await self.get('ip', '0.0.0.0', port=5000)
+        
+    async def _set_ip_by_p2p(self):
+        await self.set('ip', self.ip, '0.0.0.0', port=5000)
         
     def rm_disk(self):
         # self.vm.containers.get(self.name).remove(force=True)
