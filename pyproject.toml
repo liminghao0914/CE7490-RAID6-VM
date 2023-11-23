@@ -3,7 +3,7 @@ requires = ["poetry-core>"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
-name = "raidvm"
+name = "raid6vm"
 version = "0.1.0"
 description = "CE7490_Final_Project"
 authors = ["liminghao0914"]
