@@ -7,7 +7,9 @@ This project, part of CE7490 Advanced Topics in Distributed Systems, focuses on 
 In our implementation, we've utilized advanced coding techniques based on Vandermonde-RS code. 
 The system is designed with six primary functions: distributing data storage, handling data updates, disk failure detection, data restoration, and data object retrieval.
 
-![RAID-6 System Architecture](/imgs/RAID_6.png)
+<p align="left">
+  <img width="460" src="/imgs/RAID_6.png">
+</p>
 
 
 ## Overview
