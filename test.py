@@ -100,6 +100,7 @@ if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('--chunk_size', type=int, default=256)
+    parser.add_argument('--num_disk', type=int, default=8)
     parser.add_argument('--use_vm', action='store_true')
     parser.add_argument('--filename', type=str, default='img_test.png')
     args = parser.parse_args()
