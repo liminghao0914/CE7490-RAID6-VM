@@ -9,11 +9,11 @@ import numpy as np
 def run(args):
     # Print the intermediate result to check the process
     check=True
-
+    
     # Experiment start
     cfg = Config(chunk_size=args.chunk_size)
     dir=cfg.mkdisk('./','default')
-    raid=RAID6(config=cfg,use_vm=True, debug=False)
+    raid=RAID6(config=cfg,use_vm=args.use_vm, debug=False)
 
     ## different test files
     # filename = 'test_small.txt' # 104 bytes
@@ -85,17 +85,22 @@ def run(args):
     print(f"read time: {read_time} seconds")
     print(f"write time: {write_time} seconds")
     print(f"rebuild time: {rebuild_time} seconds")
-    np.savez(f'saved/chunk_size_{args.chunk_size}_time.npz', read_time=read_time, write_time=write_time, rebuild_time=rebuild_time)
+    if args.use_vm:
+        np.savez(f'saved/vmdisk/chunk_size_{args.chunk_size}_time.npz', read_time=read_time, write_time=write_time, rebuild_time=rebuild_time)
+    else:
+        np.savez(f'saved/localdisk/chunk_size_{args.chunk_size}_time.npz', read_time=read_time, write_time=write_time, rebuild_time=rebuild_time)
     
-    print("cleaning up...")
-    for i in range(cfg.num_disk):
-        raid.vm_disk_list[i].rm_disk()
-        raid.rebuild_vm_disk_list[i].rm_disk()
+    if args.use_vm:
+        print("cleaning up...")
+        for i in range(cfg.num_disk):
+            raid.vm_disk_list[i].rm_disk()
+            raid.rebuild_vm_disk_list[i].rm_disk()
 
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('--chunk_size', type=int, default=256)
+    parser.add_argument('--use_vm', action='store_true')
     parser.add_argument('--filename', type=str, default='img_test.png')
     args = parser.parse_args()
     

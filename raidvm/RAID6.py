@@ -252,6 +252,7 @@ class RAID6(object):
 
         chunks_restore = []
         all_disks = defaultdict(lambda: None)
+        
         if not self.use_vm:
             # local disk
             for d in os.listdir(dir):
@@ -310,13 +311,14 @@ class RAID6(object):
                 data_restore[l].extend(chunks_restore[c][l])
         
         parity_data_restore = self.compute_parity(np.array(data_restore))
+        
         if not self.use_vm:
             # local disk
             dir_rebuild=self.config.mkdisk('./','rebuild')
         else:
             # ! VM disk
             dir_rebuild = './storage_rebuild'
-            self.chunk_save(parity_data_restore, dir_rebuild)
+        self.chunk_save(parity_data_restore, dir_rebuild)
         return
 
     def retrieve(self, dir):
