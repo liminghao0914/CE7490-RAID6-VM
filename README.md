@@ -17,13 +17,14 @@ The system is designed with six primary functions: distributing data storage, ha
 
 
 # Installation
-
-## Dependencies
-
 ### VM 
 - Docker version 24.0.2, build cb74dfc
 
 ### Python
+- python==3.9.0
+
+  
+## Dependencies
 - Flask==3.0.0
 - numpy==1.22.4
 - kademlia==2.2.2
