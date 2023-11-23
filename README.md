@@ -9,6 +9,14 @@ The system is designed with six primary functions: distributing data storage, ha
 
 ![RAID-6 System Architecture](/images/system_architecture.png)
 
+
+## Overview
+The project report includes various images that demonstrate the system's flow and architecture:
+
+![RAID-6 Data Flow](/images/flow.png)=
+
+For more detailed visualizations and explanations, refer to the project report `RAID_6_Based_Distributed_Storage_System.pdf`.
+
 # Installation
 
 ## Dependencies
@@ -58,36 +66,9 @@ The project is structured with clear separation of concerns, allowing for easy c
 To initiate the test experiments and observe the RAID-6 system in action, run:
 
 ```bash
-python test.py 
+bash test.sh
 ```
 
-Upon execution, the system will demonstrate the RAID-6 operations, and the performance metrics will be displayed:
-
-```
-Read time: 0.08199000358581543 seconds
-Write time: 3.647477149963379 seconds
-Rebuild time: 8.104788064956665 seconds
-```
-
-These metrics offer insight into the system's performance, highlighting the efficiency of data reading, writing, and rebuilding processes.
-
-# Visualization
-
-The project report includes various images that demonstrate the system's flow and architecture:
-
-![RAID-6 Data Flow](/images/flow.png) *// Image illustrating the data flow within the RAID-6 system.*
-
-For more detailed visualizations and explanations, refer to the project report `RAID_6_Based_Distributed_Storage_System.pdf`.
-
-# Further Work and Contributions
-
-The project is open for further development and contributions. Future work may include:
-
-- Enhancing the efficiency of Galois Field computations.
-- Expanding the system to support more complex data operations.
-- Improving the user interface for managing and monitoring the RAID-6 system.
-- Integrating additional machine learning algorithms for predictive disk failure analysis.
-
-Contributors can fork the repository, make their changes, and submit a pull request for review.
+# Acknowledgement
 
 
