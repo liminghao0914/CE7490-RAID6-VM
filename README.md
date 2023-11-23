@@ -13,9 +13,7 @@ The system is designed with six primary functions: distributing data storage, ha
 ## Overview
 The project report includes various images that demonstrate the system's flow and architecture:
 
-![RAID-6 Data Flow](/images/flow.png)=
-
-For more detailed visualizations and explanations, refer to the project report `RAID_6_Based_Distributed_Storage_System.pdf`.
+![RAID-6 Data Flow](/images/flow.png)
 
 # Installation
 
