@@ -4,14 +4,20 @@ This project, part of CE7490 Advanced Topics in Distributed Systems, focuses on 
 
 # Introduction
 
-RAID-6, also referred to as double-parity RAID, enhances data storage reliability by distributing data and parity across multiple disks. This configuration allows for two disk failures within the array without any data loss. It's a step above RAID-5 by adding an additional layer of redundancy.
-
-In our implementation, we've utilized advanced coding techniques based on Vandermonde-RS code. By leveraging Python 3.7 and libraries such as `numpy`, we've been able to implement efficient Galois Field arithmetic and matrix operations which are critical for RAID-6 functionality.
-
+In our implementation, we've utilized advanced coding techniques based on Vandermonde-RS code. 
 The system is designed with six primary functions: distributing data storage, handling data updates, disk failure detection, data restoration, and data object retrieval.
 
-![RAID-6 System Architecture](/images/system_architecture.png) *// Image showing the system architecture.*
+![RAID-6 System Architecture](/images/system_architecture.png) 
+*// Image showing the system architecture.*
 
+# Installation
+
+Use the package manager [pip](https://pip.pypa.io/en/stable/) to install ChatTwin.
+
+```bash
+pip install poetry
+poetry install
+```
 
 # Project Structure
 
