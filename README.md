@@ -1,6 +1,6 @@
-# RAID-6 Based Distributed Storage System
+# RAID6VM: Implement RAID-6 distributed storage system on multiple virtual machines
 
-We implement _RAID6VM: RAID-6-based distributed storage system._ for CE7490 project 2.
+We implement _RAID6VM: Implement RAID-6 distributed storage system on multiple virtual machines._ for CE7490 project 2.
 
 Code contriutors: [Minghao LI](https://github.com/liminghao0914), [Tianwen ZHU](https://github.com/tianwen1209).
 
