@@ -21,6 +21,10 @@ The project report includes various images that demonstrate the system's flow an
 
 ## Dependencies
 
+### VM 
+- Docker version 24.0.2, build cb74dfc
+
+### Python
 - Flask==3.0.0
 - numpy==1.22.4
 - kademlia==2.2.2
@@ -28,37 +32,15 @@ The project report includes various images that demonstrate the system's flow an
 - requests-oauthlib==1.3.1
 - nest-asyncio==1.5.6
 
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install RAIDVM.
+Before install RAID6VM, you need to build the docker image by
+```bash
+bash raidvm/vm_app/build.sh
+```
 
+Use the package manager [pip](https://pip.pypa.io/en/stable/) to install RAID6VM.
 ```bash
 pip install poetry
 poetry install
-```
-
-# Project Structure
-
-The project is structured with clear separation of concerns, allowing for easy configuration, data management, and system testing.
-
-```
-.
-├── data                    # Data objects used for testing and demonstration
-│   ├── shakespeare.txt     # Text data example
-│   └── img_test.png        # Image data example
-├── src                     # Source code of the RAID-6 system
-│   ├── RAID6.py            # Main RAID-6 logic
-│   ├── GaloisField.py      # Galois Field arithmetic implementation
-│   ├── config.py           # Configuration parameters for the system
-│   ├── vm_app              # Virtual machine application for RAID-6 system
-│   │   ├── app.py          # Flask application for HTTP I/O operations
-│   │   ├── Dockerfile      # Dockerfile for creating containerized environment
-│   │   └── ...             # Additional vm_app module files
-│   └── utils.py            # Utility functions for RAID-6 operations
-├── images                  # Images for README and report documentation
-├── test.py                 # Script to run system tests and performance benchmarks
-├── storage_default         # Default storage directory for RAID-6 data blocks
-├── storage_rebuild         # Storage for reconstructed data after disk failure
-├── data_retrieved          # Directory for data retrieved from the RAID-6 system
-└── README.md               # Project documentation
 ```
 
 # Running Experiments
