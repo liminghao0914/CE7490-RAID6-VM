@@ -20,7 +20,7 @@ The system is designed with six primary functions: distributing data storage, ha
 - requests-oauthlib==1.3.1
 - nest-asyncio==1.5.6
 
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install ChatTwin.
+Use the package manager [pip](https://pip.pypa.io/en/stable/) to install RAIDVM.
 
 ```bash
 pip install poetry
