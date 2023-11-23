@@ -12,7 +12,7 @@ In our implementation, we've utilized advanced coding techniques based on Vander
 The system is designed with six primary functions: distributing data storage, handling data updates, disk failure detection, data restoration, and data object retrieval.
 
 <p align="center">
-  <img width="460" src="/imgs/r6vm_sys.png">
+  <img width="100%" src="/imgs/r6vm_sys.png">
 </p>
 
 
