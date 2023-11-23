@@ -1,7 +1,8 @@
 # RAID-6 Based Distributed Storage System
 
 We implement _RAID6VM: RAID-6-based distributed storage system._ for CE7490 project 2.
-Contriutors: [Minghao LI](https://github.com/liminghao0914), [Tianwei ZHU](https://github.com/tianwen1209).
+
+Code Contriutors: [Minghao LI](https://github.com/liminghao0914), [Tianwei ZHU](https://github.com/tianwen1209).
 
 <p align="center">
   <img width="460" src="/imgs/RAID_6.png">
