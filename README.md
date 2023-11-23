@@ -52,5 +52,4 @@ bash test.sh
 ```
 
 # Acknowledgement
-
-
+Mnay thanks to Ruihang's code at https://github.com/RuihangWang/RAID6.
