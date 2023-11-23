@@ -2,14 +2,14 @@
 
 This project, part of CE7490 Advanced Topics in Distributed Systems, focuses on the implementation and analysis of a RAID-6 based distributed storage system.
 
+<p align="center">
+  <img width="460" src="/imgs/RAID_6.png">
+</p>
+
 # Introduction
 
 In our implementation, we've utilized advanced coding techniques based on Vandermonde-RS code. 
 The system is designed with six primary functions: distributing data storage, handling data updates, disk failure detection, data restoration, and data object retrieval.
-
-<p align="center">
-  <img width="460" src="/imgs/RAID_6.png">
-</p>
 
 ![RAID-6 Data Flow](/imgs/r6vm_sys.png)
 
