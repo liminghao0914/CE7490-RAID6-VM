@@ -70,7 +70,7 @@ plt.plot(chunk_size_x, write_time_y, 'o-', linewidth=2, label='Local Disk')
 
 plt.xticks(chunk_size_x, [r'$2^{%d}$' % i for i in chunk_size_x])
 plt.xlabel('Chunk Size (bytes)', fontsize=18)
-plt.ylabel('Read Time (s)', fontsize=18)
+plt.ylabel('Write Time (s)', fontsize=18)
 plt.grid()
 plt.legend(fontsize=18, loc='upper left')
 plt.savefig('imgs/write_time_chunksize.pdf')

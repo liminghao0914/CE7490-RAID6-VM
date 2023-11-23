@@ -1,5 +1,5 @@
-from raidvm.config import Config
-from raidvm.RAID6 import RAID6
+from raid6vm.config import Config
+from raid6vm.RAID6 import RAID6
 import os
 from data import DATA_PATH
 import time
@@ -14,14 +14,7 @@ def run(args):
     cfg = Config(num_disk=args.num_disk, chunk_size=args.chunk_size)
     dir=cfg.mkdisk('./','default')
     raid=RAID6(config=cfg,use_vm=args.use_vm, debug=False)
-
-    ## different test files
-    # filename = 'test_small.txt' # 104 bytes
-    # filename = 'shakespeare_small.txt' # 1145 bytes
-    # filename = 'shakespeare.txt' # 5,458,199 bytes
-    # filename = 'img_test.png' # 1.4MB
     filename = args.filename
-
 
     #! Store()
     # write data object to disks with parities
@@ -86,9 +79,11 @@ def run(args):
     print(f"write time: {write_time} seconds")
     print(f"rebuild time: {rebuild_time} seconds")
     if args.use_vm:
-        np.savez(f'saved/vmdisk/chunk_size_{args.chunk_size}_num_disk_{args.num_disk}_time.npz', read_time=read_time, write_time=write_time, rebuild_time=rebuild_time)
+        np.savez(f'saved/vmdisk/chunk_size_{args.chunk_size}_num_disk_{args.num_disk}_{args.filename}_time.npz', 
+                 read_time=read_time, write_time=write_time, rebuild_time=rebuild_time)
     else:
-        np.savez(f'saved/localdisk/chunk_size_{args.chunk_size}_num_disk_{args.num_disk}_time.npz', read_time=read_time, write_time=write_time, rebuild_time=rebuild_time)
+        np.savez(f'saved/localdisk/chunk_size_{args.chunk_size}_num_disk_{args.num_disk}_{args.filename}_time.npz', 
+                 read_time=read_time, write_time=write_time, rebuild_time=rebuild_time)
     
     if args.use_vm:
         print("cleaning up...")

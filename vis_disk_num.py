@@ -9,7 +9,7 @@ local_files = os.listdir('./saved/localdisk/')
 chunk_size_x = []
 read_time_y = []
 for file in vm_files:
-    if file.startswith('chunk_size_256_num_disk'):
+    if file.startswith('chunk_size_256_num_disk') and 'txt' not in file:
         data = np.load('./saved/vmdisk/'+file)
         chunk_size = int(file.split('_')[5])
         read_time = data['read_time']
@@ -22,7 +22,7 @@ plt.plot(chunk_size_x, read_time_y, 'o-', linewidth=2, label='VM Disk')
 chunk_size_x = []
 read_time_y = []
 for file in local_files:
-    if file.startswith('chunk_size_256_num_disk'):
+    if file.startswith('chunk_size_256_num_disk') and 'txt' not in file:
         data = np.load('./saved/localdisk/'+file)
         chunk_size = int(file.split('_')[5])
         read_time = data['read_time']
@@ -45,7 +45,7 @@ plt.clf()
 chunk_size_x = []
 write_time_y = []
 for file in vm_files:
-    if file.startswith('chunk_size_256_num_disk'):
+    if file.startswith('chunk_size_256_num_disk') and 'txt' not in file:
         data = np.load('./saved/vmdisk/'+file)
         chunk_size = int(file.split('_')[5])
         write_time = data['write_time']
@@ -58,7 +58,7 @@ plt.plot(chunk_size_x, write_time_y, 'o-', linewidth=2, label='VM Disk')
 chunk_size_x = []
 write_time_y = []
 for file in local_files:
-    if file.startswith('chunk_size_256_num_disk'):
+    if file.startswith('chunk_size_256_num_disk') and 'txt' not in file:
         data = np.load('./saved/localdisk/'+file)
         chunk_size = int(file.split('_')[5])
         write_time = data['write_time']
@@ -70,7 +70,7 @@ plt.plot(chunk_size_x, write_time_y, 'o-', linewidth=2, label='Local Disk')
 
 # plt.xticks(chunk_size_x, [r'$2^{%d}$' % i for i in chunk_size_x])
 plt.xlabel('Disk Num', fontsize=18)
-plt.ylabel('Read Time (s)', fontsize=18)
+plt.ylabel('Write Time (s)', fontsize=18)
 plt.grid()
 plt.legend(fontsize=18, loc='upper left')
 plt.savefig('imgs/write_time_disknum.pdf')
@@ -80,7 +80,7 @@ plt.clf()
 chunk_size_x = []
 rebuild_time_y = []
 for file in vm_files:
-    if file.startswith('chunk_size_256_num_disk'):
+    if file.startswith('chunk_size_256_num_disk') and 'txt' not in file:
         data = np.load('./saved/vmdisk/'+file)
         chunk_size = int(file.split('_')[5])
         rebuild_time = data['rebuild_time']
@@ -93,7 +93,7 @@ plt.plot(chunk_size_x, rebuild_time_y, 'o-', linewidth=2, label='VM Disk')
 chunk_size_x = []
 rebuild_time_y = []
 for file in local_files:
-    if file.startswith('chunk_size_256_num_disk'):
+    if file.startswith('chunk_size_256_num_disk') and 'txt' not in file:
         data = np.load('./saved/localdisk/'+file)
         chunk_size = int(file.split('_')[5])
         rebuild_time = data['rebuild_time']
