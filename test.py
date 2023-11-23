@@ -11,7 +11,7 @@ def run(args):
     check=True
     
     # Experiment start
-    cfg = Config(chunk_size=args.chunk_size)
+    cfg = Config(num_disk=args.num_disk, chunk_size=args.chunk_size)
     dir=cfg.mkdisk('./','default')
     raid=RAID6(config=cfg,use_vm=args.use_vm, debug=False)
 
@@ -86,9 +86,9 @@ def run(args):
     print(f"write time: {write_time} seconds")
     print(f"rebuild time: {rebuild_time} seconds")
     if args.use_vm:
-        np.savez(f'saved/vmdisk/chunk_size_{args.chunk_size}_time.npz', read_time=read_time, write_time=write_time, rebuild_time=rebuild_time)
+        np.savez(f'saved/vmdisk/chunk_size_{args.chunk_size}_num_disk_{args.num_disk}_time.npz', read_time=read_time, write_time=write_time, rebuild_time=rebuild_time)
     else:
-        np.savez(f'saved/localdisk/chunk_size_{args.chunk_size}_time.npz', read_time=read_time, write_time=write_time, rebuild_time=rebuild_time)
+        np.savez(f'saved/localdisk/chunk_size_{args.chunk_size}_num_disk_{args.num_disk}_time.npz', read_time=read_time, write_time=write_time, rebuild_time=rebuild_time)
     
     if args.use_vm:
         print("cleaning up...")

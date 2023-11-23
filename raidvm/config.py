@@ -10,12 +10,12 @@ class Config(object):
         num_data_disk: disk for data storage
         num_check_disk: disk for parity storage
     '''
-    def __init__(self, num_disk=8, num_data_disk=6, num_check_disk=2, chunk_size=256):
+    def __init__(self, num_disk=8, num_check_disk=2, chunk_size=256):
         self.num_disk = num_disk
-        self.num_data_disk = num_data_disk
+        self.num_data_disk = num_disk - num_check_disk
         self.num_check_disk = num_check_disk
 
-        assert self.num_disk == self.num_data_disk + self.num_check_disk
+        # assert self.num_disk == self.num_data_disk + self.num_check_disk
 
         self.chunk_size = chunk_size
         self.stripe_size = self.num_data_disk * self.chunk_size
